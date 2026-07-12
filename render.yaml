@@ -1,3 +1,9 @@
+databases:
+  - name: edgesignal-db
+    plan: free
+    databaseName: edgesignal
+    user: edgesignal
+
 services:
   - type: web
     name: edgesignal
@@ -10,3 +16,7 @@ services:
         generateValue: true
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: DATABASE_URL
+        fromDatabase:
+          name: edgesignal-db
+          property: connectionString
