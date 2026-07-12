@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}EdgeSignal — Inteligencia de mercado del S&P 500{% endblock %}</title>
+  <meta name="description" content="EdgeSignal detecta oportunidades de compra en acciones del S&P 500 mediante análisis estadístico avanzado: desviación histórica, Bandas de Bollinger, RSI y un Score de Oportunidad propietario.">
+  <meta name="keywords" content="S&P 500, acciones, RSI, Bandas de Bollinger, análisis técnico, oportunidades de inversión, screener">
+  <meta property="og:title" content="EdgeSignal — Inteligencia de mercado">
+  <meta property="og:description" content="Detectá acciones del S&P 500 estadísticamente baratas en tiempo real.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.1/dist/chartjs-chart-financial.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('landing') }}">
+      <span class="brand-mark">◢</span> Edge<span class="accent">Signal</span>
+    </a>
+    <nav class="nav">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('screener') }}">Screener</a>
+        <a href="{{ url_for('profile') }}">Perfil</a>
+        <a class="btn-ghost" href="{{ url_for('logout') }}">Salir</a>
+      {% else %}
+        <a href="{{ url_for('landing') }}#como-funciona">Cómo funciona</a>
+        <a href="{{ url_for('login') }}">Ingresar</a>
+        <a class="btn-accent" href="{{ url_for('register') }}">Crear cuenta</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, msg in messages %}
+          <div class="flash flash-{{ category }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>EdgeSignal · Inteligencia de mercado del S&P 500</p>
+    <p class="disclaimer">
+      ⚠️ Esto es una herramienta educativa de análisis estadístico. <strong>No</strong> es asesoramiento
+      financiero. El rendimiento pasado no garantiza resultados futuros. Invertí bajo tu propia responsabilidad.
+    </p>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

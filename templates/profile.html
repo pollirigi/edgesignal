@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Perfil · EdgeSignal{% endblock %}
+{% block content %}
+<section class="container narrow">
+  <div class="section-head"><h2>👤 Tu perfil</h2></div>
+  <div class="card glass">
+    <div class="profile-row"><span class="muted">Email</span><span class="mono">{{ current_user.email }}</span></div>
+    <div class="profile-row"><span class="muted">Miembro desde</span><span class="mono">{{ current_user.created_at.strftime('%d/%m/%Y') if current_user.created_at else '—' }}</span></div>
+    <div class="profile-row"><span class="muted">Acciones en tu watchlist</span><span class="mono accent">{{ watch_count }}</span></div>
+  </div>
+  <div class="profile-actions">
+    <a class="btn-accent" href="{{ url_for('dashboard') }}">Ir al dashboard</a>
+    <a class="btn-ghost" href="{{ url_for('logout') }}">Cerrar sesión</a>
+  </div>
+</section>
+{% endblock %}

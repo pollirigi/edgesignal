@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Screener · EdgeSignal{% endblock %}
+{% block content %}
+<section class="container">
+  <div class="section-head">
+    <h2>🛰️ Screener de mercado</h2>
+    <p>Filtrá todo el universo del S&P 500 por Score, sector, RSI y caída respecto al promedio.</p>
+  </div>
+
+  <div class="card glass screener-filters">
+    <label>Score mínimo
+      <input type="range" id="f-score" min="0" max="100" value="0" step="1">
+      <output id="f-score-out" class="mono">0</output>
+    </label>
+    <label>RSI máximo
+      <input type="range" id="f-rsi" min="0" max="100" value="100" step="1">
+      <output id="f-rsi-out" class="mono">100</output>
+    </label>
+    <label>Caída mínima vs promedio (%)
+      <input type="range" id="f-dev" min="0" max="40" value="0" step="1">
+      <output id="f-dev-out" class="mono">0</output>
+    </label>
+    <label>Sector
+      <select id="f-sector">
+        <option value="">Todos</option>
+        {% for s in sectors %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+      </select>
+    </label>
+    <button class="btn-accent" id="apply-btn">Aplicar filtros</button>
+  </div>
+
+  <p class="muted" id="result-count" style="margin:1rem 0;"></p>
+
+  <div class="card glass">
+    <div class="table-wrap">
+      <table class="data-table sortable" id="screener-table">
+        <thead>
+          <tr>
+            <th data-key="symbol">Símbolo</th>
+            <th data-key="name">Empresa</th>
+            <th data-key="sector">Sector</th>
+            <th data-key="price" class="num">Precio</th>
+            <th data-key="deviation_pct" class="num">Desv. 52s</th>
+            <th data-key="rsi" class="num">RSI</th>
+            <th data-key="range_position" class="num">Pos. rango</th>
+            <th data-key="score" class="num">Score ▼</th>
+          </tr>
+        </thead>
+        <tbody id="screener-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/screener.js') }}"></script>
+{% endblock %}

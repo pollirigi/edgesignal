@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="pill">📊 Análisis estadístico en tiempo real · S&P 500</span>
+    <h1>Detectá acciones <span class="accent">estadísticamente baratas</span><br>antes que el mercado reaccione.</h1>
+    <p class="lead">
+      EdgeSignal escanea el S&P 500 y combina desviación del promedio histórico, Bandas de Bollinger
+      y RSI en un único <strong>Score de Oportunidad</strong> del 1 al 100. Vos solo mirás los números.
+    </p>
+    <div class="hero-cta">
+      <a class="btn-accent btn-lg" href="{{ url_for('register') }}">Crear cuenta gratis</a>
+      <a class="btn-ghost btn-lg" href="#como-funciona">Ver cómo funciona</a>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="section-head">
+    <h2>🔥 Top 10 oportunidades ahora mismo</h2>
+    <p>Las 10 acciones del S&P 500 con mayor Score de Oportunidad en este momento.</p>
+  </div>
+
+  <div class="card glass">
+    <div class="table-wrap">
+      <table class="data-table" id="top-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Símbolo</th><th>Empresa</th><th>Sector</th>
+            <th class="num">Precio</th><th class="num">Desv. 52s</th>
+            <th class="num">RSI</th><th class="num">Score</th>
+          </tr>
+        </thead>
+        <tbody id="top-body">
+          <!-- skeletons -->
+          {% for _ in range(10) %}
+          <tr class="skeleton-row">
+            <td colspan="8"><div class="skeleton"></div></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="container" id="como-funciona">
+  <div class="section-head">
+    <h2>⚙️ Cómo funciona el sistema</h2>
+    <p>Cuatro señales estadísticas, un solo número que las resume.</p>
+  </div>
+  <div class="grid-4">
+    <div class="card glass feature">
+      <div class="feature-icon">📉</div>
+      <h3>Desviación histórica</h3>
+      <p>Comparamos el precio actual contra el promedio de las últimas 52 semanas. Una caída fuerte puede señalar una oportunidad.</p>
+    </div>
+    <div class="card glass feature">
+      <div class="feature-icon">📊</div>
+      <h3>Bandas de Bollinger</h3>
+      <p>Si el precio perfora la banda inferior, estadísticamente está en zona de sobreventa respecto a su volatilidad reciente.</p>
+    </div>
+    <div class="card glass feature">
+      <div class="feature-icon">⚡</div>
+      <h3>RSI</h3>
+      <p>El Índice de Fuerza Relativa mide el momentum. Por debajo de 30 indica que la acción está "sobrevendida".</p>
+    </div>
+    <div class="card glass feature">
+      <div class="feature-icon">🎯</div>
+      <h3>Score de Oportunidad</h3>
+      <p>Combinamos las tres señales en un puntaje del 1 al 100. Cuanto más alto, más barata está la acción frente a su propia historia.</p>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <a class="affiliate-banner" href="https://www.etoro.com" target="_blank" rel="noopener sponsored">
+    <div>
+      <strong>¿Listo para invertir?</strong>
+      <span>Abrí tu cuenta gratuita en eToro</span>
+    </div>
+    <span class="affiliate-cta">Empezar ahora →</span>
+  </a>
+  <p class="ad-label">Enlace de afiliado · Tu capital está en riesgo.</p>
+</section>
+
+<section class="container final-cta">
+  <div class="card glass cta-card">
+    <h2>Dejá de adivinar. Empezá a medir.</h2>
+    <p>Creá tu watchlist, seguí tus acciones y exportá tus análisis. Gratis.</p>
+    <a class="btn-accent btn-lg" href="{{ url_for('register') }}">Crear mi cuenta</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+{% endblock %}

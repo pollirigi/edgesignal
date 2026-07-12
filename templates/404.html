@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}No encontrado · EdgeSignal{% endblock %}
+{% block content %}
+<section class="container narrow" style="text-align:center; padding-top:4rem;">
+  <h1 style="font-size:5rem; margin:0;" class="accent mono">404</h1>
+  <p class="lead">Esta página no existe o se movió.</p>
+  <a class="btn-accent btn-lg" href="{{ url_for('landing') }}">Volver al inicio</a>
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Ingresar · EdgeSignal{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="card glass auth-card">
+    <h1>Ingresar</h1>
+    <p class="muted">Accedé a tu dashboard y watchlist.</p>
+    <form method="post" class="form">
+      <label>Email
+        <input type="email" name="email" required autocomplete="email" placeholder="vos@email.com">
+      </label>
+      <label>Contraseña
+        <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+      </label>
+      <button type="submit" class="btn-accent btn-block">Ingresar</button>
+    </form>
+    <p class="auth-alt">¿No tenés cuenta? <a href="{{ url_for('register') }}">Creá una gratis</a></p>
+  </div>
+</section>
+{% endblock %}

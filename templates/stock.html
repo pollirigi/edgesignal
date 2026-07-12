@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ symbol }} · EdgeSignal{% endblock %}
+{% block content %}
+<section class="container" data-symbol="{{ symbol }}" id="detail-root">
+  <a class="back-link" href="{{ url_for('screener') }}">← Volver al screener</a>
+
+  <div class="section-head" style="margin-top:1rem;">
+    <h2 class="mono" id="d-symbol">{{ symbol }}</h2>
+    <p id="d-name" class="muted">Cargando…</p>
+  </div>
+
+  <div id="detail-error" class="flash flash-error" hidden></div>
+
+  <div class="card glass stock-card" id="detail-card" hidden>
+    <div class="stock-card-head">
+      <div>
+        <button class="btn-accent" id="d-add">+ Agregar a watchlist</button>
+      </div>
+    </div>
+    <div class="stock-card-body">
+      <div class="chart-col"><canvas id="d-chart"></canvas></div>
+      <div class="gauge-col">
+        <div class="gauge-wrap">
+          <canvas id="d-gauge" width="180" height="180"></canvas>
+          <div class="gauge-center">
+            <span class="gauge-value mono" id="d-score"></span>
+            <span class="gauge-label">Score</span>
+          </div>
+        </div>
+        <p class="gauge-verdict" id="d-verdict"></p>
+      </div>
+    </div>
+    <div class="indicators" id="d-indicators"></div>
+  </div>
+
+  <div class="skeleton-card card glass" id="detail-skeleton">
+    <div class="skeleton" style="height:280px;"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/detail.js') }}"></script>
+{% endblock %}

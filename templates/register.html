@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Crear cuenta · EdgeSignal{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="card glass auth-card">
+    <h1>Crear cuenta</h1>
+    <p class="muted">Gratis. Sin tarjeta. En 10 segundos.</p>
+    <form method="post" class="form">
+      <label>Email
+        <input type="email" name="email" required autocomplete="email" placeholder="vos@email.com">
+      </label>
+      <label>Contraseña
+        <input type="password" name="password" required minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+      </label>
+      <button type="submit" class="btn-accent btn-block">Crear mi cuenta</button>
+    </form>
+    <p class="auth-alt">¿Ya tenés cuenta? <a href="{{ url_for('login') }}">Ingresá</a></p>
+  </div>
+</section>
+{% endblock %}

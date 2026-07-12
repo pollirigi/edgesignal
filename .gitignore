@@ -1,0 +1,28 @@
+# Entorno virtual
+venv/
+env/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Base de datos local (se recrea sola en el primer arranque)
+edgesignal.db
+instance/
+
+# Logs
+*.log
+
+# Variables de entorno / secretos
+.env
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Claude Code local
+.claude/

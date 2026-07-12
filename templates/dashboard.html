@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · EdgeSignal{% endblock %}
+{% block content %}
+<section class="container">
+  <div class="section-head">
+    <h2>📈 Tu dashboard</h2>
+    <p>Buscá acciones, seguilas y compará sus Scores de Oportunidad.</p>
+  </div>
+
+  <div class="card glass searchbar">
+    <div class="search-input">
+      <input type="text" id="search" placeholder="Buscar por símbolo (AAPL) o empresa (Apple)…" autocomplete="off">
+      <div id="search-results" class="search-results"></div>
+    </div>
+    <button class="btn-ghost" id="export-btn">⬇ Exportar a CSV</button>
+  </div>
+
+  <!-- Tabla comparativa -->
+  <div class="section-head sub"><h3>📋 Comparativa de tu watchlist</h3></div>
+  <div class="card glass">
+    <div class="table-wrap">
+      <table class="data-table" id="compare-table">
+        <thead>
+          <tr>
+            <th>Símbolo</th><th>Empresa</th><th class="num">Precio</th>
+            <th class="num">Desv. 52s</th><th class="num">RSI</th>
+            <th class="num">%b Bollinger</th><th class="num">Score</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="compare-body"></tbody>
+      </table>
+      <p class="empty-state" id="compare-empty" hidden>Tu watchlist está vacía. Buscá una acción arriba para empezar.</p>
+    </div>
+  </div>
+
+  <!-- Cards detalladas -->
+  <div class="section-head sub"><h3>🔎 Detalle por acción</h3></div>
+  <div id="cards" class="cards-grid"></div>
+</section>
+
+<!-- Plantilla de card (clonada por JS) -->
+<template id="stock-card-template">
+  <div class="card glass stock-card">
+    <div class="stock-card-head">
+      <div>
+        <h3 class="sym mono"></h3>
+        <span class="cname muted"></span>
+      </div>
+      <button class="btn-remove" title="Quitar de watchlist">✕</button>
+    </div>
+
+    <div class="stock-card-body">
+      <div class="chart-col">
+        <canvas class="candle-chart"></canvas>
+      </div>
+
+      <div class="gauge-col">
+        <div class="gauge-wrap">
+          <canvas class="gauge-chart" width="180" height="180"></canvas>
+          <div class="gauge-center">
+            <span class="gauge-value mono"></span>
+            <span class="gauge-label">Score</span>
+          </div>
+        </div>
+        <p class="gauge-verdict"></p>
+      </div>
+    </div>
+
+    <div class="indicators"></div>
+  </div>
+</template>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
