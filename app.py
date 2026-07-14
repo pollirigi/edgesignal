@@ -16,6 +16,7 @@ from flask import (
 from flask_login import (
     LoginManager, current_user, login_required, login_user, logout_user,
 )
+from sqlalchemy.exc import SQLAlchemyError
 
 import analysis
 import cache
@@ -27,6 +28,12 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 db.init_app(app)
+
+# Crea las tablas si no existen. Esto tiene que correr acá (a nivel de módulo)
+# y no solo bajo `if __name__ == "__main__"`, porque en producción gunicorn
+# importa `app:app` directamente y ese bloque nunca se ejecuta.
+with app.app_context():
+    db.create_all()
 
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
@@ -103,15 +110,26 @@ def register():
             flash("Ingresá un email válido.", "error")
         elif len(password) < 6:
             flash("La contraseña debe tener al menos 6 caracteres.", "error")
-        elif User.query.filter_by(email=email).first():
-            flash("Ya existe una cuenta con ese email.", "error")
         else:
-            user = User(email=email)
-            user.set_password(password)
-            db.session.add(user)
-            db.session.commit()
-            login_user(user, remember=True)
-            return redirect(url_for("dashboard"))
+            try:
+                if User.query.filter_by(email=email).first():
+                    flash("Ya existe una cuenta con ese email.", "error")
+                else:
+                    user = User(email=email)
+                    user.set_password(password)
+                    db.session.add(user)
+                    db.session.commit()
+                    login_user(user, remember=True)
+                    return redirect(url_for("dashboard"))
+            except SQLAlchemyError:
+                db.session.rollback()
+                app.logger.exception("Error de base de datos al registrar usuario email=%r", email)
+                flash(
+                    "No pudimos crear tu cuenta por un error interno del servidor. "
+                    "Probá de nuevo en unos minutos.",
+                    "error",
+                )
+                return render_template("register.html"), 500
     return render_template("register.html")
 
 
@@ -122,7 +140,16 @@ def login():
     if request.method == "POST":
         email = (request.form.get("email") or "").strip().lower()
         password = request.form.get("password") or ""
-        user = User.query.filter_by(email=email).first()
+        try:
+            user = User.query.filter_by(email=email).first()
+        except SQLAlchemyError:
+            app.logger.exception("Error de base de datos al iniciar sesión email=%r", email)
+            flash(
+                "No pudimos iniciar tu sesión por un error interno del servidor. "
+                "Probá de nuevo en unos minutos.",
+                "error",
+            )
+            return render_template("login.html"), 500
         if user and user.check_password(password):
             login_user(user, remember=True)
             next_url = request.args.get("next")
@@ -291,11 +318,5 @@ def not_found(_e):
     return render_template("404.html"), 404
 
 
-def init_db():
-    with app.app_context():
-        db.create_all()
-
-
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True, port=5000)
